@@ -1,4 +1,5 @@
 # 폴더 전체 무시
 data/
 wandb/
-models/
+model/
+checkpoints/
