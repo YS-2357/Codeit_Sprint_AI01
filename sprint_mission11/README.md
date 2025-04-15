@@ -8,14 +8,10 @@
 
 ```
 .
-├── data/                    # 원시 및 전처리 데이터, vocab 저장
+├── data/                   # 원시 및 전처리 데이터, vocab 저장
 ├── checkpoints/            # 모델 체크포인트 저장
 ├── src/                    # 주요 코드 파일
-│   ├── train.py            # 학원 및 평가 룰티
-│   ├── model.py            # Encoder/Decoder 및 Attention
-│   ├── dataset.py          # DataLoader 및 전처리
-│   └── utils.py            # 보조 유틸리티 함수
-├── main.py                 # 실행 짹짹점
+├── main.py                 # 실행
 ├── requirements.txt        # 필요 라이브러리 목록
 └── README.md               # 프로젝트 문서
 ```
@@ -56,8 +52,8 @@ python main.py
 - ✅ 데이터 전처리 자동화 (길이 기반 필터링 포함)
 - ✅ Stratified Split + Weighted Sampling 지원
 - ✅ wandb 연동으로 로그 및 번역 샘플 기록 가능
-- ✅ Optuna 기반 하이퍼파리터 탐색 가능
-- ✅ 학원 후 BLEU 점수 및 예제 문장 Í9c력
+- ✅ Optuna 기반 하이퍼파리터 탐색 가능 (.ipynb)
+- ✅ 학습 후 BLEU 점수 및 예제 문장 출력
 
 ---
 

@@ -73,9 +73,9 @@ run_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 config.update({
     # 학습 하이퍼파라미터
     "num_epochs": 100,
-    "learning_rate": 5e-4,
+    "learning_rate": 0.025979870010903847,
     "weight_decay": 1e-5,
-    "dropout": 0.3,
+    "dropout": 0.3798667697931237,
     "optimizer": "Adam",
     "patience": 10,
 
@@ -90,9 +90,9 @@ config.update({
     "use_attention": True,                  # 어텐션 사용 여부
 
     # RNN 기반 모델 공통 설정
-    "embedding_dim": 64,
-    "hidden_size": 64,
-    "gru_num_layers": 2,
+    "embedding_dim": 256,
+    "hidden_size": 128,
+    "gru_num_layers": 1,
 
     # 체크포인트 및 vocab 저장
     "checkpoint_path": f"checkpoints/attn_seq2seq_{run_time}.pt",
