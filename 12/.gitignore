@@ -1,0 +1,5 @@
+# 폴더 전체 무시
+data/
+wandb/
+model/
+checkpoints/
