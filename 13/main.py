@@ -1,9 +1,8 @@
-from src.data_utils import get_df
-from src.loader import get_datasets, get_tokenizer, tokenize_datasets
-from src.model import get_training_args, get_model, create_trainer
-from src.uitils import get_predictions_and_labels, print_acc_and_confusion_matrix, print_samples
+from src.train import run_train_and_eval
+from peft import LoraConfig, TaskType
+from datetime import datetime
 
-
+# 공통 설정
 data_config = {
     # df
     "data_dir": "/teamspace/studios/this_studio/Codeit_Sprint_AI01/13/data/review_data/쇼핑몰/05. 생활",
@@ -21,7 +20,6 @@ data_config = {
     "text_output": True,    # True면 원문 포함
 }
 
-from datetime import datetime
 
 def get_timestamped_output_dir(model_name, base_dir="./results"):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M")
@@ -29,13 +27,14 @@ def get_timestamped_output_dir(model_name, base_dir="./results"):
 
 output_dir = get_timestamped_output_dir(data_config["model_name"])
 
+
 trainer_config = {
     "num_epochs": 1,
     "batch_size": 2,
     "output_dir": output_dir,
-    "eval_steps": 500,
-    "save_steps": 500,
-    "logging_steps": 500,
+    "eval_steps": 1000,
+    "save_steps": 1000,
+    "logging_steps": 1000,
     "gradient_accumulation_steps": 4,
 }
 
@@ -51,34 +50,9 @@ peft_config = LoraConfig(
 )
 
 import wandb
-wandb.login(key="d96360caa2ca3fa72006523172f7c3e30085f64c")
+wandb.login()
 
+
+# 실행 진입점
 if __name__ == "__main__":
-    df = get_df(data_config["data_dir"])
-    datasets = get_datasets(df, data_config)
-    tokenizer = get_tokenizer(data_config)
-    tokenized_datasets = tokenize_datasets(datasets, tokenizer, data_config)
-
-    # wandb
-    wandb.init(
-        project="peft-classification",
-        name = f"{data_config['model_name'].replace('/', '_')}_{datetime.now().strftime('%Y%m%d_%H%M')}"
-    )
-
-    model_peft = get_model(data_config, peft_config)
-    model_peft.print_trainable_parameters()
-    # print(model_peft)/
-
-    training_args = get_training_args(trainer_config)
-
-    trainer = create_trainer(model_peft, training_args, tokenized_datasets, mode='train')
-    trainer.train()
-    
-    from transformers import Trainer
-    # Trainer 재생성
-    eval_trainer = create_trainer(model_peft, training_args, tokenized_datasets, mode='eval')
-
-    # 평가 실행
-    pred_labels, true_labels = get_predictions_and_labels(eval_trainer, tokenized_datasets["test"])
-    print_acc_and_confusion_matrix(true_labels, pred_labels)
-    print_samples(datasets["test"], true_labels, pred_labels, num_samples=5)
+    run_train_and_eval(data_config, trainer_config, peft_config)

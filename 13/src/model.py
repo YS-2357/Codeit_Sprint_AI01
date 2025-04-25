@@ -1,9 +1,20 @@
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
 import evaluate
 import torch
-from peft import get_peft_model, LoraConfig, TaskType
+from peft import get_peft_model
 
 def get_model(config, peft_config=None):
+    """
+    사전학습된 분류 모델을 불러오고 필요 시 PEFT(LoRA)를 적용합니다.
+
+    Args:
+        config (dict): 모델 구성 설정
+            - "model_name" (str): 사전학습 모델 이름
+        peft_config (LoraConfig, optional): LoRA 설정 객체
+
+    Returns:
+        transformers.PreTrainedModel: 분류용 모델 객체
+    """
     model = AutoModelForSequenceClassification.from_pretrained(
         config["model_name"],
         num_labels=3,  # 또는 len(set(df["label"]))
@@ -15,6 +26,16 @@ def get_model(config, peft_config=None):
 
 
 def get_training_args(config):
+    """
+    Hugging Face Trainer에 필요한 학습 인자를 생성합니다.
+
+    Args:
+        config (dict): 학습 설정
+            - output_dir, batch_size, num_epochs, eval/save/logging steps 등 포함
+
+    Returns:
+        transformers.TrainingArguments: 학습 인자 객체
+    """
     return TrainingArguments(
         output_dir=config["output_dir"],
         per_device_train_batch_size=config["batch_size"],
@@ -40,6 +61,18 @@ def get_training_args(config):
 
 
 def create_trainer(model, training_args, tokenized_datasets, mode='train'):
+    """
+    Hugging Face Trainer 객체를 생성합니다. 평가 모드도 지원합니다.
+
+    Args:
+        model (transformers.PreTrainedModel): 학습 혹은 평가할 모델
+        training_args (TrainingArguments): 학습 인자
+        tokenized_datasets (dict): train/val/test Dataset 딕셔너리
+        mode (str): "train" or "eval"
+
+    Returns:
+        transformers.Trainer: Trainer 객체
+    """
     accuracy_metric = evaluate.load("accuracy")
     precision_metric = evaluate.load("precision")
     recall_metric = evaluate.load("recall")
@@ -76,4 +109,14 @@ def create_trainer(model, training_args, tokenized_datasets, mode='train'):
                 eval_dataset=tokenized_datasets["test"]
         )
     else:
-        raise ValueError
+        raise ValueError(f"Invalid mode: {mode}")
+
+
+def get_device():
+    """
+    현재 실행 환경에서 사용 가능한 디바이스를 반환합니다.
+
+    Returns:
+        torch.device: "cuda" 또는 "cpu"
+    """
+    return torch.device("cuda" if torch.cuda.is_available() else "cpu")
