@@ -18,6 +18,12 @@ data_config = {
     "input_column": "text",
     "label_column": "label",
     "text_output": True,    # True면 원문 포함
+
+    # model
+    "train_layers": [
+        "encoder.layer.11",
+        "classifier"
+    ],
 }
 
 
@@ -32,9 +38,9 @@ trainer_config = {
     "num_epochs": 1,
     "batch_size": 2,
     "output_dir": output_dir,
-    "eval_steps": 1000,
-    "save_steps": 1000,
-    "logging_steps": 1000,
+    "eval_steps": 643,
+    "save_steps": 643,
+    "logging_steps": 643,
     "gradient_accumulation_steps": 4,
 }
 
@@ -43,16 +49,16 @@ from peft import LoraConfig, TaskType
 peft_config = LoraConfig(
     task_type=TaskType.SEQ_CLS,
     inference_mode=False,
-    r=2,
-    lora_alpha=8,
+    r=4,
+    lora_alpha=16,
     lora_dropout=0.05,
-    target_modules=["query", "value"]
+    target_modules=["key", "query", "value"]
 )
 
 import wandb
-wandb.login()
+wandb.login(key="d96360caa2ca3fa72006523172f7c3e30085f64c")
 
 
 # 실행 진입점
 if __name__ == "__main__":
-    run_train_and_eval(data_config, trainer_config, peft_config)
+    model = run_train_and_eval(data_config, trainer_config)

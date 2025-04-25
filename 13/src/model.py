@@ -3,13 +3,18 @@ import evaluate
 import torch
 from peft import get_peft_model
 
-def get_model(config, peft_config=None):
+from transformers import AutoModelForSequenceClassification
+from peft import get_peft_model, LoraConfig
+
+def get_model(config: dict, peft_config: LoraConfig = None):
     """
     사전학습된 분류 모델을 불러오고 필요 시 PEFT(LoRA)를 적용합니다.
+    선택적으로 특정 레이어만 학습되도록 설정할 수 있습니다.
 
     Args:
         config (dict): 모델 구성 설정
             - "model_name" (str): 사전학습 모델 이름
+            - "train_layers" (list of str, optional): 학습할 레이어 이름 패턴 목록
         peft_config (LoraConfig, optional): LoRA 설정 객체
 
     Returns:
@@ -18,10 +23,22 @@ def get_model(config, peft_config=None):
     model = AutoModelForSequenceClassification.from_pretrained(
         config["model_name"],
         num_labels=3,  # 또는 len(set(df["label"]))
-        # quantization_config=get_quatization_config(),     # cpu에서는 불가능
     )
+
+    # LoRA 적용
     if peft_config:
         model = get_peft_model(model, peft_config)
+
+    # 선택적 layer unfreeze
+    if "train_layers" in config:
+        # 전체 파라미터 freeze
+        for name, param in model.named_parameters():
+            param.requires_grad = False
+        # 지정된 레이어만 unfreeze
+        for name, param in model.named_parameters():
+            if any(target in name for target in config["train_layers"]):
+                param.requires_grad = True
+
     return model
 
 
