@@ -41,7 +41,7 @@ trainer_config = {
     "eval_steps": 643,
     "save_steps": 643,
     "logging_steps": 643,
-    "gradient_accumulation_steps": 4,
+    "gradient_accumulation_steps": 2,
 }
 
 from peft import LoraConfig, TaskType
@@ -49,8 +49,8 @@ from peft import LoraConfig, TaskType
 peft_config = LoraConfig(
     task_type=TaskType.SEQ_CLS,
     inference_mode=False,
-    r=4,
-    lora_alpha=16,
+    r=2,
+    lora_alpha=8,
     lora_dropout=0.05,
     target_modules=["key", "query", "value"]
 )
