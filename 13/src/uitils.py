@@ -1,4 +1,5 @@
 import torch
+import wandb
 
 def get_predictions_and_labels(trainer, dataset):
     """
@@ -37,9 +38,17 @@ def print_acc_and_confusion_matrix(true_labels, pred_labels):
 
     cm = confusion_matrix(true_labels, pred_labels)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["negative", "neutral", "positive"])
-    disp.plot(cmap="Blues", values_format='d')
+
+    # Plot and capture figure
+    fig, ax = plt.subplots(figsize=(6, 6))
+    disp.plot(cmap="Blues", values_format='d', ax=ax)
     plt.title("Confusion Matrix")
+    plt.tight_layout()
     plt.show()
+
+    # WandB 이미지로 로깅
+    wandb.log({"confusion_matrix": wandb.Image(fig)})
+    plt.close(fig)  # 리소스 해제
 
 
 def print_samples(dataset, true_labels, pred_labels, num_samples=5):

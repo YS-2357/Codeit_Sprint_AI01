@@ -1,9 +1,6 @@
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
 import evaluate
 import torch
-from peft import get_peft_model
-
-from transformers import AutoModelForSequenceClassification
 from peft import get_peft_model, LoraConfig
 
 def get_model(config: dict, peft_config: LoraConfig = None):

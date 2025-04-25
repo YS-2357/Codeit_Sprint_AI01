@@ -21,6 +21,10 @@ data_config = {
 
     # model
     "train_layers": [
+        "encoder.layer.7",
+        "encoder.layer.8",
+        "encoder.layer.9",
+        "encoder.layer.10",
         "encoder.layer.11",
         "classifier"
     ],
@@ -38,10 +42,13 @@ trainer_config = {
     "num_epochs": 1,
     "batch_size": 2,
     "output_dir": output_dir,
+    "save_path": output_dir,
     "eval_steps": 643,
     "save_steps": 643,
     "logging_steps": 643,
     "gradient_accumulation_steps": 4,
+
+    "resume_from_checkpoint": "None",
 }
 
 from peft import LoraConfig, TaskType
@@ -56,7 +63,7 @@ peft_config = LoraConfig(
 )
 
 import wandb
-wandb.login(key="d96360caa2ca3fa72006523172f7c3e30085f64c")
+wandb.login()
 
 
 # 실행 진입점
