@@ -51,7 +51,7 @@ peft_config = LoraConfig(
 )
 
 import wandb
-wandb.login()
+wandb.login(key="d96360caa2ca3fa72006523172f7c3e30085f64c")
 
 if __name__ == "__main__":
     df = get_df(data_config["data_dir"])
