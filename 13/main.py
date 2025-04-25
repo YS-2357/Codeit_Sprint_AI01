@@ -6,7 +6,7 @@ from src.uitils import get_predictions_and_labels, print_acc_and_confusion_matri
 
 data_config = {
     # df
-    "data_dir": "C:/Users/user/Desktop/PythonWorkspace/Codeit_Sprint_AI01/13/data/review_data/쇼핑몰/05. 생활",
+    "data_dir": "/teamspace/studios/this_studio/Codeit_Sprint_AI01/13/data/review_data/쇼핑몰/05. 생활",
 
     # dataset
     "seed": 42,
@@ -51,7 +51,7 @@ peft_config = LoraConfig(
 )
 
 import wandb
-wandb.login(key="d96360caa2ca3fa72006523172f7c3e30085f64c")
+wandb.login()
 
 if __name__ == "__main__":
     df = get_df(data_config["data_dir"])
