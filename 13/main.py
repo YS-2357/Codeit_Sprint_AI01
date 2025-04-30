@@ -113,7 +113,7 @@ peft_config = AdaLoraConfig(
 
 
 import wandb
-wandb.login(key="d96360caa2ca3fa72006523172f7c3e30085f64c")
+wandb.login()
 
 
 # 실행 진입점
