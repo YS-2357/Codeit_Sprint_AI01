@@ -1,9 +1,6 @@
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
 import evaluate
 import torch
-from peft import get_peft_model
-
-from transformers import AutoModelForSequenceClassification
 from peft import get_peft_model, LoraConfig
 
 def get_model(config: dict, peft_config: LoraConfig = None):
@@ -25,10 +22,6 @@ def get_model(config: dict, peft_config: LoraConfig = None):
         num_labels=3,  # 또는 len(set(df["label"]))
     )
 
-    # LoRA 적용
-    if peft_config:
-        model = get_peft_model(model, peft_config)
-
     # 선택적 layer unfreeze
     if "train_layers" in config:
         # 전체 파라미터 freeze
@@ -38,6 +31,10 @@ def get_model(config: dict, peft_config: LoraConfig = None):
         for name, param in model.named_parameters():
             if any(target in name for target in config["train_layers"]):
                 param.requires_grad = True
+
+    # PEFT 적용
+    if peft_config:
+        model = get_peft_model(model, peft_config)
 
     return model
 

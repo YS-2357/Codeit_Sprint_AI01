@@ -2,16 +2,27 @@ import os
 import json
 import pandas as pd
 
-def get_df(data_dir):
+def get_df(data_dir, task_type="general"):
     """
-    지정된 디렉토리에서 JSON 파일들을 탐색하여 감성 분석용 데이터프레임을 생성합니다.
+    감성 분석 태스크용 데이터프레임을 생성합니다.
+
+    지정된 디렉토리 내 JSON 파일들을 탐색하여, 선택한 태스크 유형("general" 또는 "aspect")에 따라
+    `text`와 `label` 컬럼을 포함한 데이터프레임을 생성합니다.
+
+    - "general" 태스크의 경우: 전체 리뷰 문장과 일반 감성 레이블을 추출합니다.
+    - "aspect" 태스크의 경우: 리뷰 문장과 각 Aspect 항목별로 감성 레이블을 조합합니다.
+
+    감성 레이블은 [-1, 0, 1] 값을 각각 [0, 1, 2]로 정규화하여 반환합니다.
 
     Args:
-        data_dir (str): JSON 파일들이 저장된 상위 디렉토리 경로
+        data_dir (str): JSON 리뷰 파일들이 저장된 상위 디렉토리 경로
+        task_type (str, optional): 태스크 유형 ("general" 또는 "aspect").
+                                   기본값은 "general"
 
     Returns:
-        pd.DataFrame: text와 label 컬럼을 포함한 전처리된 데이터프레임
-                      label은 [-1, 0, 1]을 각각 [0, 1, 2]로 변환합니다.
+        pd.DataFrame: 전처리된 감성 분석용 데이터프레임
+            - "text": 입력 문장 (RawText 또는 RawText + [SEP] + Aspect)
+            - "label": 감성 정답 레이블 (0=부정, 1=중립, 2=긍정)
     """
     # json 파일 모으기
     json_paths = []
@@ -27,22 +38,39 @@ def get_df(data_dir):
             try:
                 items = json.load(f)
                 for item in items:
-                    polarity = item.get("GeneralPolarity", None)
-                    text = item.get("RawText", None)
-
-                    if polarity is not None and text:  # 둘 다 있어야 추가
-                        polarity = int(polarity)
-                        if polarity in [-1, 0, 1]:
+                    if task_type == "general":
+                        polarity = item.get("GeneralPolarity")
+                        text = item.get("RawText")
+                        try:
+                            polarity = int(polarity)
+                        except (TypeError, ValueError):
+                            continue
+                        if text and polarity in [-1, 0, 1]:
                             data.append({
                                 "text": text,
-                                "label": polarity + 1  # -1 → 0, 0 → 1, 1 → 2
+                                "label": polarity + 1
                             })
-            except Exception:
-                continue  # 형식 이상한 파일은 무시하고 넘어감
 
-    # 데이터프레임 만들기
-    df = pd.DataFrame(data)
-    df = df.dropna().drop_duplicates()
+                    elif task_type == "aspect":
+                        text = item.get("RawText")
+                        aspects = item.get("Aspects")
+                        if text and aspects:
+                            for aspect_info in aspects:
+                                aspect = aspect_info.get("Aspect")
+                                polarity = aspect_info.get("SentimentPolarity")
+                                try:
+                                    polarity = int(polarity)
+                                except (TypeError, ValueError):
+                                    continue
+                                if aspect and polarity in [-1, 0, 1]:
+                                    data.append({
+                                        "text": f"{text} [SEP] {aspect}",
+                                        "label": polarity + 1
+                                    })
+            except Exception:
+                continue
+
+    df = pd.DataFrame(data).dropna().drop_duplicates()
     return df
 
 from datasets import Dataset
