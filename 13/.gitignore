@@ -1,5 +1,4 @@
 # 폴더 전체 무시
 data/
 wandb/
-checkpoints/
 results/

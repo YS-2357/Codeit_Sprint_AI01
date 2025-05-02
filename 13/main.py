@@ -29,6 +29,7 @@ data_config = {
 
     # model
     "train_layers": [
+        "electra",
         "classifier",
     ],
 }
@@ -91,7 +92,7 @@ peft_config = AdaLoraConfig(
     tfinal=300,
     deltaT=10,
     orth_reg_weight=0.5,
-    total_step=6430,
+    total_step=17720,
 )
 
 # peft_config = PromptEncoderConfig(
