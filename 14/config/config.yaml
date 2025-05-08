@@ -1,0 +1,22 @@
+file_path: "C:/Users/user/Desktop/PythonWorkspace/Codeit_Sprint_AI01/14/data/2024년+원천징수의무자를+위한+연말정산+신고안내.pdf"
+
+chunk:
+  size: 500
+  overlap: 100
+
+embedding_model:
+  name: "nlpai-lab/KoE5"
+
+llm_model:
+  name: "nlpai-lab/KULLM3"
+  quantization:
+    load_in_4bit: true
+    use_double_quant: true
+    quant_type: "nf4"
+    compute_dtype: "float16"
+    enable_fp32_offload: true
+
+generation:
+  temperature: 0.1
+  repetition_penalty: 1.2
+  max_new_tokens: 256
