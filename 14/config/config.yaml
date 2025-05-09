@@ -8,7 +8,7 @@ embedding_model:
   name: "nlpai-lab/KoE5"
 
 llm_model:
-  name: "nlpai-lab/KULLM3"
+  name: "beomi/KoAlpaca-Polyglot-5.8B"
   quantization:
     load_in_4bit: true
     use_double_quant: true
@@ -19,4 +19,4 @@ llm_model:
 generation:
   temperature: 0.1
   repetition_penalty: 1.2
-  max_new_tokens: 256
+  max_new_tokens: 1000

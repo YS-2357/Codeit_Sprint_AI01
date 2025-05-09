@@ -1,17 +1,13 @@
 from langchain_core.prompts import PromptTemplate
 
-def get_prompt():
-    return PromptTemplate.from_template(
-        """
-아래에 주어진 맥락을 이용해 질문에 대해 답변해 줘.
-주어진 맥락으로 답변이 어려운 상황이라면, 그냥 모른다고 답하면 되고 억지로 답변을 꾸며 내지 마.
-최대한 자세하게 답변해 줘.
-반드시 한국어로 답변해야 해.
+def get_prompt(template: str) -> PromptTemplate:
+    """
+    주어진 문자열 템플릿을 기반으로 LangChain의 PromptTemplate 객체를 생성합니다.
 
-맥락:
-{context}
+    Args:
+        template (str): 프롬프트 문자열. 예: "{context}\n\n질문: {question}"
 
-질문:
-{question}
-"""
-    )
+    Returns:
+        PromptTemplate: LangChain에서 사용할 수 있는 프롬프트 템플릿 객체
+    """
+    return PromptTemplate.from_template(template)
