@@ -1,0 +1,11 @@
+services:
+  jupyter-notebook:
+    image: jupyter/base-notebook:latest
+    container_name: jupyter-notebook-ds
+    ports:
+      - "10000:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    # jupyter token 세팅 / logs로 확인해도된다.
+    environment:
+     - JUPYTER_TOKEN=1234
