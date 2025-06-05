@@ -4,8 +4,6 @@ services:
   trainer:
     image: ys2357/re1-train:latest
     container_name: trainer_container
-    volumes:
-      - ./shared:/app/shared
     command: ["python", "train_model.py"]
 
   jupyter:

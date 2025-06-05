@@ -69,3 +69,57 @@
 - 두 연구자의 Python 버전과 패키지 버전을 동일하게 유지하는 방안
 - 연구자 1의 컨테이너에 있는 데이터와 `model.pkl` 파일을 연구자 2의 컨테이너로 전달하는 전략  
   > 💡 힌트: 두 컨테이너와 호스트 간 볼륨을 공유하고, `docker cp` 명령어를 활용한다.
+
+---
+
+## 🧪 연구자 실험 수행 순서
+
+### 📁 1. Researcher 1 (모델 학습 및 이미지 생성)
+
+```bash
+# Docker 이미지 빌드
+docker build -t ys2357/re1-train:latest .
+
+# 컨테이너 실행 (모델 학습 수행 확인)
+docker run --name trainer_container ys2357/re1-train:latest python train_model.py
+
+# 컨테이너 종료 상태 확인 (Exited 0)
+docker ps -a
+
+# shared 디렉토리 생성 및 모델 복사 (.pkl 혹인)
+mkdir ./shared
+docker cp trainer_container:/app/shared/model.pkl ../shared/model.pkl
+
+# 컨테이너 제거
+docker rm trainer_container
+
+# DockerHub 로그인 및 이미지 푸시
+docker login
+docker tag ys2357/re1-train:latest your_dockerhub_id/re1-train:latest
+docker push ys2357/re1-train:latest
+```
+
+---
+
+### 📁 2. Researcher 2 (모델 다운로드 및 Jupyter 환경 설정)
+
+```bash
+# trainer 컨테이너 실행 (모델 재생성)
+docker-compose up trainer
+
+# shared 디렉토리 생성 및 모델/테스트셋 복사
+mkdir ./shared
+docker cp trainer_container:/app/shared/model.pkl ./shared/model.pkl
+docker cp trainer_container:/app/shared/test.csv ./shared/test.csv
+
+# trainer 컨테이너 제거
+docker rm trainer_container
+
+# Jupyter Notebook 서버 실행
+docker-compose up -d jupyter
+
+# 접속 URL(token) 확인
+docker logs jupyter_container
+```
+
+> 🔗 브라우저에서 http://localhost:8888 접속 후 token 입력

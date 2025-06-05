@@ -7,5 +7,3 @@ COPY train.csv ./
 COPY test.csv ./
 
 RUN pip install --no-cache-dir pandas numpy scikit-learn
-
-CMD ["python", "train_model.py"]
