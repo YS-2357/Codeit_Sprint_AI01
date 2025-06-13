@@ -78,6 +78,15 @@ def predict_digit(model, image):
 
 # 앱 시작
 st.title("손글씨 숫자 인식 앱")
+# st.markdown('''
+#             <style>
+#                 .title {
+#                     color: green;
+#                     font-size: 40px;
+#             }
+#             </style>
+#             <hl class='title'>손글씨 숫자 인식 앱</hl>
+# ''', unsafe_allow_html=True)
 
 # 모델 로드
 try:
