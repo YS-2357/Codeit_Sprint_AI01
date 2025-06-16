@@ -2,7 +2,7 @@
 
 ## 기초
 
-본 프로젝트는 GitHub의 ONNX 모델 저장소(https://github.com/onnx/models/tree/main/validated/vision/classification/mnist/model)에서 제공하는 MNIST ONNX 모델을 활용하여, 사용자가 웹 인터페이스에서 손으로 숫자를 그려 입력하면 해당 숫자를 예측하는 Streamlit 기반 웹 서비스를 개발하는 것을 목표로 합니다. 이를 통해 모델 추론, 이미지 전처리, 결과 시각화 및 사용자 경험을 강화한 인터랙티브 서비스를 구현합니다.
+본 프로젝트는 GitHub의 [ONNX 모델 저장소](https://github.com/onnx/models/tree/main/validated/vision/classification/mnist/model)에서 제공하는 MNIST ONNX 모델을 활용하여, 사용자가 웹 인터페이스에서 손으로 숫자를 그려 입력하면 해당 숫자를 예측하는 Streamlit 기반 웹 서비스를 개발하는 것을 목표로 합니다. 이를 통해 모델 추론, 이미지 전처리, 결과 시각화 및 사용자 경험을 강화한 인터랙티브 서비스를 구현합니다.
 
 **주요 구성 요소**:
 
