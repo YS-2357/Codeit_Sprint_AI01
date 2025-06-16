@@ -34,3 +34,22 @@
 - **보고서**: 프로젝트 개요, 코드 설명, Docker Hub URL을 포함한 PDF 형식의 보고서.
 - **코드**: 주석이 포함된 소스 코드 및 관련 파일을 ZIP 형식으로 제출.
 - 구글드라이브 미션-성함 /심화미션 폴더에 제출
+
+---
+
+## docker
+
+```bash
+# 빌드
+docker build -t ys2357/mnist-app .
+
+# 로그인
+docker login
+
+# 푸시
+docker push ys2357/mnist-app
+
+# 실행 테스트
+docker run -p 8501:8501 ys2357/mnist-app
+
+```

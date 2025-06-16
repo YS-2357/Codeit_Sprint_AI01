@@ -139,10 +139,6 @@ if canvas_image.image_data is not None:
             styled_df = df.style.apply(highlight_probabilities_row, axis=1)
             styled_df = styled_df.format("{:.2%}")
 
-            # 왼쪽에 'Label' 인덱스를 추가해 표 형식 강조
-            df_with_labels = df.copy()
-            df_with_labels.index.name = "Row"
-            
             st.dataframe(styled_df)
         else:
             st.error("Failed to predict")
