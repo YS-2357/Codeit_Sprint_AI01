@@ -7,11 +7,16 @@ import pandas as pd
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image 
 
+# python -m streamlit run app.py 
+
 st.set_page_config(
     page_title="MNIST App",
     page_icon="🔢",
     layout="wide"
 )
+
+if 'history' not in st.session_state:
+    st.session_state.history = []
 
 # 모델 로드
 @st.cache_resource
@@ -135,7 +140,7 @@ if canvas_image.image_data is not None:
                 return [f"background-color: {get_color(p)}" for p in row]
 
             st.subheader(f"Prediction: {pred_label}")
-
+    
             styled_df = df.style.apply(highlight_probabilities_row, axis=1)
             styled_df = styled_df.format("{:.2%}")
 
@@ -146,3 +151,29 @@ if canvas_image.image_data is not None:
         st.info("Processing image...")
 else:
     st.info("Draw a number")
+
+if st.button("Save result", icon='📌'):
+    st.session_state.history.append(
+        {
+            "image": processed_image_display.copy(),
+            "label": pred_label,
+            "prob": max(probs)
+        }
+    )
+    st.success("Image Saved Successfully!")
+
+st.markdown("---")
+st.header("History")
+
+if st.toggle("See History"):
+    st.subheader("Saved History")
+    if st.session_state.history:
+        for i, entry in enumerate(reversed(st.session_state.history[-5:])):
+            cols = st.columns([1, 3])
+            with cols[0]:
+                st.image(entry["image"], width=64, caption=f"#{len(st.session_state.history) - i}")
+            with cols[1]:
+                st.write(f"**Prediction:** {entry['label']}, **Probablity:** {entry['prob']:.2f}%")
+
+    else:
+        st.info("No History")
