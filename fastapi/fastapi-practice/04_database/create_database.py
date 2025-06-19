@@ -12,7 +12,9 @@ engine = create_engine(sqlite_url, echo=True, connect_args=connect_args,)
 
 # Movie 모델 정의 (SQLModel로 데이터베이스 테이블용)
 class Movie(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True, description='ID 중복불가')
+    # table=True: 데이터베이스 관련으로 사용
+    # False or default: pydantic에서 활용했던 것처럼 데이터 검증에 활용 가능
+    id: int = Field(default=None, primary_key=True, description='ID 중복불가')
     title: str = Field(min_length=1, description='제목')
     director: str = Field(min_length=1, description='감독')
     category: str = Field(min_length=1, description='카테고리')
