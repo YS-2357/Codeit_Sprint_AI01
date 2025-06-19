@@ -66,9 +66,7 @@ class MovieRequest(Movie):
         }
     }
     
-
 app = FastAPI()
-
 
 # MOVIES: List[Movie] = [
 #     Movie(id=1, title='기생충', director='봉준호', category='드라마'),
@@ -91,59 +89,50 @@ async def read_all_movies(session: SessionDep):
     movies = session.exec(select(MoviesTable)).all()
     return movies
 
-@app.get('/movies/{movie_title}', response_model=Movie, response_model_exclude=['id'])  # id값을 제외하고 반환
-async def read_movies(movie_title: Annotated[str, Path(description="영화 제목")]):
-    for movie in MOVIES:
-        if movie.title == movie_title:
-            # 태극기 휘날리며의 경우 web상에 넣기 위해서는 태극기%20휘날리며
-            return movie
-        
+@app.get('/movies/{movie_title}', response_model=List[Movie], response_model_exclude=['id'])  # id값을 제외하고 반환
+async def read_movie(session: SessionDep, 
+                      movie_title: Annotated[str, Path(description="영화 제목")]):
+    movies = session.exec(
+        select(MoviesTable).where(MoviesTable.title == movie_title)
+    ).all() # list로 반환
+    
+    if movies:
+        return movies
     raise HTTPException(status_code=404, detail="영화 없음")
 
 @app.get('/movies/')
-async def get_category_by_query(category: Annotated[str | None, Query()] = None):
+async def get_category_by_query(session: SessionDep, category: Annotated[str | None, Query()] = None):
     '''
     쿼리 파람터로 카테고리(영화 종류)를 받고
     영화 db에서 해당 카테고리 영화가 있다면 리스트 반환
     '''
-    print(f"category: {category}")
-    # http://127.0.0.1:8000/movies/?category=코미디
-
-    movies_to_return = []
-    for movie in MOVIES:
-        if movie.category == category:
-            movies_to_return.append(movie)
-
-    return movies_to_return
+    if category:
+        movies = session.exec(
+            select(MoviesTable).where(MoviesTable.category == category)
+        ).all() # list로 반환
+        
+        if movies:
+            return movies
+    raise HTTPException(status_code=404, detail="영화 없음")
 
 
 # 감독 이름으로 검색
 @app.get('/search')
-async def get_direcor_category_by_query(director: Annotated[str | None, Query()] = None, category: Annotated[str | None, Query()] = None):
+async def get_direcor_category_by_query(session: SessionDep, director: Annotated[str | None, Query()] = None, category: Annotated[str | None, Query()] = None):
     
-    # http://127.0.0.1:8000/search?director=봉준호&category=드라마
-    # 출력: 
-    # [
-    # {
-    #     "id": 1,
-    #     "title": "기생충",
-    #     "director": "봉준호",
-    #     "category": "드라마"
-    # },
-    # {
-    #     "id": 8,
-    #     "title": "설국열차",
-    #     "director": "봉준호",
-    #     "category": "드라마"
-    # }
-    # ]
-
-    movies_to_return = []
-    for movie in MOVIES:
-        if movie.director == director and movie.category == category:
-            movies_to_return.append(movie)
-
-    return movies_to_return
+    if director and category:
+        movies = session.exec(
+            select(MoviesTable).where(
+                and_(
+                    MoviesTable.director == director,
+                    MoviesTable.category == category,
+                )
+            )
+        ).all() # list로 반환
+        
+        if movies:
+            return movies
+    raise HTTPException(status_code=404, detail="영화 없음")
 
 @app.post('/movies/create_movie')
 async def create_movie(new_movies: Annotated[MovieRequest, Body(description="영화 추가 요소")] = None):
