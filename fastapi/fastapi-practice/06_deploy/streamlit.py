@@ -2,6 +2,9 @@ import streamlit as st
 import requests
 import os
 
+# codeit.com
+# api.codeit.com
+
 # 컨테이너간 통신시 컨테이너 이름이 url로 사용
 BASE_URL = os.getenv('BACKEND_URL', 'http://fastapi-backend:8000')
 

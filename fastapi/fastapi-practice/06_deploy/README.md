@@ -1,5 +1,12 @@
 # 영화 리뷰 서비스
 
+```bash
+uv init -p 3.10
+uv add fastapi uvicorn streamlit torch transformers sentencepiece
+uv run uvicorn main:app --reload
+uv run streamlit run streamlit.py
+```
+
 FastAPI 백엔드와 Streamlit 프론트엔드로 구성된 영화 리뷰 서비스입니다.
 KoBERT 모델을 사용하여 리뷰의 감정 분석 기능을 제공합니다.
 

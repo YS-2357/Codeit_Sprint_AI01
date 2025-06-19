@@ -2,8 +2,8 @@ from fastapi import FastAPI,HTTPException
 from transformers import AutoTokenizer, BertForSequenceClassification
 from fastapi import FastAPI
 
-tokenizer = AutoTokenizer.from_pretrained('monologg/kobert',trust_remote_code=True)
-model = BertForSequenceClassification.from_pretrained('jeonghyeon97/koBERT-Senti5')
+tokenizer = AutoTokenizer.from_pretrained('monologg/kobert',trust_remote_code=True, resume_download=True)
+model = BertForSequenceClassification.from_pretrained('jeonghyeon97/koBERT-Senti5', resume_download=True)
 
 
 app = FastAPI()

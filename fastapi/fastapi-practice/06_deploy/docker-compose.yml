@@ -1,4 +1,14 @@
 services:
   fastapi-backend:
+    build: 
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
 
   streamlit-frontend:
+    build: 
+      dockerfile: Dockerfile.streamlit
+    ports:
+      - "8501:8501"
+    depends_on:
+      - fastapi-backend
