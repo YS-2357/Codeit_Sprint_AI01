@@ -1,0 +1,9 @@
+# 가상환경
+.venv/
+
+# 파이썬 캐시
+__pycache__/
+*.py[cod]
+
+# 잠금 파일
+uv.lock

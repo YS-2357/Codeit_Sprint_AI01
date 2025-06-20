@@ -1,1 +1,1 @@
-pyproject.toml -> requires-python = "==3.10.\*"
+pyproject.toml -> requires-python = "==3.10.*"
