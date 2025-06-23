@@ -88,6 +88,7 @@ erDiagram
     string sentiment
     datetime created_at
   }
+  }
 
 ```
 
