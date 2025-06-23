@@ -70,8 +70,6 @@ graph TD
 ## 🧱 데이터베이스 구조 (ERD)
 
 ```mermaid
-mermaid
-코드 복사
 erDiagram
   MOVIES ||--o{ REVIEWS : has
   MOVIES {
