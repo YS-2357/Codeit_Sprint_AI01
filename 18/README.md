@@ -71,7 +71,7 @@ graph TD
 
 ```mermaid
 erDiagram
-  MOVIES ||--o{ REVIEWS : has
+  MOVIES ||--o{ REVIEWS : has}
   MOVIES {
     int id PK
     string title
@@ -87,7 +87,6 @@ erDiagram
     string content
     string sentiment
     datetime created_at
-  }
   }
 
 ```
