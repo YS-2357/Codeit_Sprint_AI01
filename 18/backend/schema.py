@@ -6,7 +6,7 @@ class Movie(BaseModel):
     title: str = Field(..., description="영화 제목을 입력하세요.")
     director: str = Field(..., description="감독 이름을 입력하세요.")
     category: str = Field(..., description="장르를 입력하세요.")
-    rating: float | None = Field(default=3, gt=0.0, le=5.0, description="평점 (0.0 초과, 5.0 이하)")
+    rating: float | None = Field(default=2.5, gt=0.0, le=5.0, description="평점 (0.0 초과, 5.0 이하)")
     image_url: str | None = Field(default=None, description="포스터 이미지 URL을 입력하세요. 선택 항목입니다.")
 
 
