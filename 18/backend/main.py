@@ -3,6 +3,8 @@ from routers import movies, reviews
 from model import load_model
 from utils import get_logger
 
+# uvicorn main:app --reload --host 127.0.0.1 --port 8000
+
 app = FastAPI()
 logger = get_logger(__name__)
 
