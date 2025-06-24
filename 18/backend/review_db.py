@@ -10,7 +10,7 @@ def get_connection():
     return sqlite3.connect(DB_PATH)
 
 def insert_review(review: Review):
-    logger.debug(f"🛠️ 리뷰 삽입 요청: {review}")
+    logger.debug(f"🛠️ 리뷰 삽입 요청: {review.dict()}")
     connect = get_connection()
     cursor = connect.cursor()
 
