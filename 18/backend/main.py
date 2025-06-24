@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from routers import movies, reviews
 from model import load_model
-from logger import get_logger
+from utils import get_logger
 
 app = FastAPI()
 logger = get_logger(__name__)

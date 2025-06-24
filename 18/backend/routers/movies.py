@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from schema import Movie, MovieID
-from logger import get_logger
+from utils import get_logger
 from movie_db import fetch_all_movies, insert_movie, delete_movie, update_movie
 
 logger = get_logger(__name__)

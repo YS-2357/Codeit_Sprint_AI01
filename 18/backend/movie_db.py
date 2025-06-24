@@ -1,6 +1,6 @@
 import sqlite3
 from schema import Movie
-from logger import get_logger
+from utils import get_logger
 
 DB_PATH = "db/movies.db"
 logger = get_logger(__name__)

@@ -1,7 +1,7 @@
 import sqlite3
 from datetime import datetime
 from schema import Review
-from logger import get_logger
+from utils import get_logger
 
 DB_PATH = "db/reviews.db"
 logger = get_logger(__name__)
