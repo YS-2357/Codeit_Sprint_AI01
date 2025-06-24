@@ -1,20 +1,21 @@
 from fastapi import FastAPI
 from routers import movies, reviews
-from sentiment import load_model
+from model import load_model
 from logger import get_logger
 
 app = FastAPI()
 logger = get_logger(__name__)
 
 # 감성 분석 모델
-logger.info("✅ 감성 분석 모델 로드 시작")
-load_model()
+logger.debug("🛠️ 감성 분석 모델 로드 시작")
+app.state.sentiment_model = load_model()
 logger.info("✅ 감성 분석 모델 로드 완료")
 
 # 라우터 등록
-logger.debug("🛠️ 영화 라우터 등록")
+logger.debug("🛠️ 라우터 등록 시작")
 app.include_router(movies.router)
-# app.include_router(reviews.router)
+app.include_router(reviews.router)
+logger.info("✅ 라우터 등록 완료")
 
 @app.on_event("startup")
 def startup_event():
