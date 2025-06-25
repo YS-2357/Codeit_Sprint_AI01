@@ -25,7 +25,7 @@ Streamlit을 활용하여 간편하고 직관적인 사용자 인터페이스를
 
 ## 🖼️ 앱 화면 구성
 
-### 📍 메인 페이지 (`main.py`)
+### 📍 메인 페이지 (`app.py`)
 - 앱 소개 및 기능 가이드 표시
 - Streamlit 메뉴 기반 탐색 구조 안내
 
@@ -44,7 +44,7 @@ Streamlit을 활용하여 간편하고 직관적인 사용자 인터페이스를
 
 ```bash
 frontend/
-├── main.py                  # 메인 소개 페이지
+├── app.py                  # 메인 소개 페이지
 ├── pages/
 │   ├── movies.py        # 영화 등록 및 조회
 │   └── reviews.py       # 리뷰 등록 및 조회
@@ -62,7 +62,7 @@ frontend/
 pip install -r requirements.txt
 
 # 2. Streamlit 앱 실행
-streamlit run main.py
+streamlit run app.py
 
 ```
 
