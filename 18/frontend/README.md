@@ -46,9 +46,9 @@ Streamlit을 활용하여 간편하고 직관적인 사용자 인터페이스를
 frontend/
 ├── app.py                  # 메인 소개 페이지
 ├── pages/
-│   ├── movies.py        # 영화 등록 및 조회
-│   └── reviews.py       # 리뷰 등록 및 조회
-├── utils.py                 # 공통 유틸리티 (로거 설정 등)
+│   ├── movies.py           # 영화 등록 및 조회
+│   └── reviews.py          # 리뷰 등록 및 조회
+├── utils.py                # 공통 유틸리티 (로거 설정 등)
 ```
 > 📌 pages/ 디렉토리는 Streamlit의 멀티페이지 구조에 따라 자동 탐지됩니다.
 > 
