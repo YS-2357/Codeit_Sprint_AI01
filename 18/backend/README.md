@@ -112,7 +112,26 @@ Content-Type: application/json
 
 ### 🎞️ Movie
 
+| 필드명 | 타입 | 설명 |
+| --- | --- | --- |
+| id | INTEGER | PK, AUTOINCREMENT |
+| title | TEXT | 영화 제목 |
+| director | TEXT | 감독 이름 |
+| category | TEXT | 장르 |
+| rating | REAL | 평점 (0~5) |
+| image_url | TEXT | 포스터 이미지 URL |
+
 ### 📝 Review
+
+| 필드명 | 타입 | 설명 |
+| --- | --- | --- |
+| id | INTEGER | PK, AUTOINCREMENT |
+| movie_id | INTEGER | FK (movie.id 참조) |
+| reviewer | TEXT | 작성자 |
+| content | TEXT | 리뷰 내용 |
+| sentiment_label | TEXT | 감성 분류 (positive/negative) |
+| sentiment_score | REAL | 감성 점수 (0~1) |
+| created_at | TEXT | 작성일 (자동 생성) |
 
 ---
 
