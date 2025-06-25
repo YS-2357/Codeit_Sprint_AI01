@@ -93,9 +93,3 @@
 - `backend` 폴더
 
 ---
-
-## 개발 단계
-```bash
-# backend 폴더
-uvicorn main:app --reload
-```
