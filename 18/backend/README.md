@@ -98,7 +98,6 @@ Content-Type: application/json
 응답:
 
 ```json
-코드 복사
 {
   "message": "홍길동님의 리뷰가 등록되었습니다.",
   "sentiment": {
