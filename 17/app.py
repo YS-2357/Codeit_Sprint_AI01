@@ -28,7 +28,7 @@ def load_model():
 
     if not os.path.exists(model_path):
         with st.spinner("Downloading model..."):
-            r = requests(model_url)
+            r = requests.get(model_url)
             with open(model_path, "wb") as f:
                 f.write(r.content)
 
